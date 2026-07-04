@@ -152,6 +152,7 @@
         0 0 18px rgba(34,217,92,.45),
         0 0 36px rgba(34,217,92,.18);
       transition:transform .15s ease, box-shadow .15s ease;
+      cursor: pointer;
     }
 
     .btn:hover{
@@ -238,11 +239,8 @@
       <p>En tu primer depósito · Juegos originales</p>
     </div>
 
-    <!-- BOTÓN WHATSAPP 1 -->
-    <a class="btn"
-       href="https://wa.me/549XXXXXXXXXX"
-       target="_blank"
-       onclick="fbq('track', 'Contact');">
+    <!-- BOTÓN 1 -->
+    <a class="btn" id="btn1">
       📲 CREÁ TU USUARIO GRATIS
     </a>
 
@@ -250,11 +248,8 @@
       Sin costo · Registro en minutos · Bono inmediato
     </div>
 
-    <!-- BOTÓN WHATSAPP 2 -->
-    <a class="btn"
-       href="https://wa.me/549XXXXXXXXXX"
-       target="_blank"
-       onclick="fbq('track', 'Contact');">
+    <!-- BOTÓN 2 -->
+    <a class="btn" id="btn2">
       📲 REGISTRATE GRATIS AHORA
     </a>
 
@@ -280,6 +275,25 @@
     </div>
 
   </div>
+
+  <script>
+    // ================== TUS NÚMEROS DE WHATSAPP ==================
+    const numeros = [
+      "5491127802342",   // ← Reemplaza con el primer número
+      "549XXXXXXXXXX",   // ← Reemplaza con el segundo número
+      "549XXXXXXXXXX"    // ← Reemplaza con el tercer número
+    ];
+
+    function abrirWhatsApp() {
+      const numeroAleatorio = numeros[Math.floor(Math.random() * numeros.length)];
+      window.open(`https://wa.me/${numeroAleatorio}`, '_blank');
+      fbq('track', 'Contact');
+    }
+
+    // Asignar la función a ambos botones
+    document.getElementById('btn1').addEventListener('click', abrirWhatsApp);
+    document.getElementById('btn2').addEventListener('click', abrirWhatsApp);
+  </script>
 
 </body>
 </html>
