@@ -29,7 +29,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 
   <style>
-    /* (Tu CSS se mantiene exactamente igual - no lo copio aquí para ahorrar espacio) */
     *{margin:0;padding:0;box-sizing:border-box;font-family:'Montserrat',sans-serif;}
     body{min-height:100vh;background:radial-gradient(circle at top, rgba(255,190,0,.18) 0%, rgba(0,0,0,0) 35%), linear-gradient(180deg, #0a0a0a 0%, #050505 100%);color:white;display:flex;justify-content:center;align-items:center;overflow-x:hidden;}
     .container{width:100%;max-width:430px;padding:30px 20px 40px;text-align:center;position:relative;}
@@ -83,35 +82,46 @@
   </div>
 
   <script>
-    const numeros = [
-      "5491127872686",   // ← Reemplaza con número real 1
-      "5491127802342",   // ← Reemplaza con número real 2
-      "549XXXXXXXXXX"    // ← Reemplaza con número real 3
+    const contactos = [
+        {
+            numero: "5491127872686",
+            mensaje: "Hola! Vi la página de Lucky Crown y quiero crear mi usuario gratis para aprovechar el bonus del 50%."
+        },
+        {
+            numero: "5491127802342",
+            mensaje: "Hola, quiero registrarme en Lucky Crown y saber más sobre los juegos y el bonus."
+        },
+        {
+           
+        }
     ];
 
-    let numeroActual = numeros[Math.floor(Math.random() * numeros.length)];
+    let contactoActual = contactos[0];
 
-    function actualizarNumero() {
-      numeroActual = numeros[Math.floor(Math.random() * numeros.length)];
-      console.log("Número rotado a:", numeroActual); // Solo para debug
+    function actualizarContacto() {
+        contactoActual = contactos[Math.floor(Math.random() * contactos.length)];
+        console.log("Contacto rotado a:", contactoActual.numero);
     }
 
     function abrirWhatsApp() {
-      window.open(`https://wa.me/${numeroActual}`, '_blank');
-      fbq('track', 'Contact');
+        const texto = encodeURIComponent(contactoActual.mensaje);
+        const url = `https://wa.me/${contactoActual.numero}?text=${texto}`;
+        
+        window.open(url, '_blank');
+        fbq('track', 'Contact');
     }
 
     // Asignar click a ambos botones
     document.getElementById('btn1').addEventListener('click', abrirWhatsApp);
     document.getElementById('btn2').addEventListener('click', abrirWhatsApp);
 
-    // Rotación automática cada 5 minutos (300000 ms)
+    // Rotación automática cada 5 minutos
     setInterval(() => {
-      actualizarNumero();
-    }, 5 * 60 * 1000);   // ← Cambia aquí los minutos
+        actualizarContacto();
+    }, 5 * 60 * 1000);
 
     // Rotar también al cargar la página
-    actualizarNumero();
+    actualizarContacto();
   </script>
 
 </body>
