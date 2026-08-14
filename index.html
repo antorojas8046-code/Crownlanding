@@ -1,121 +1,328 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lucky Crown</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#D4AF37">
+<title>Golden Spin - Bono 100% Extra</title>
 
-  <!-- Meta Pixel -->
-  <script>
-    !function(f,b,e,v,n,t,s)
-    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-    n.queue=[];t=b.createElement(e);t.async=!0;
-    t.src=v;s=b.getElementsByTagName(e)[0];
-    s.parentNode.insertBefore(t,s)}(window, document,'script',
-    'https://connect.facebook.net/en_US/fbevents.js');
+<!-- Configuración Kommo (botón escondido) -->
+<script>
+window.crmPluginConfig = {
+  hidden: true,
+  color: '#D4AF37',
+  onlinechat: {
+    mode: 'frame',
+    container: '#kommoChatFrame',
+    locale: {
+      extends: 'es',
+      compose_placeholder: 'Escribí tu mensaje...'
+    }
+  }
+};
+</script>
 
-    fbq('init', '1062966976055558');
-    fbq('track', 'PageView');
-  </script>
-  <noscript>
-    <img height="1" width="1" style="display:none"
-         src="https://www.facebook.com/tr?id=1062966976055558&ev=PageView&noscript=1"/>
-  </noscript>
+<!-- Nuevo script de Kommo -->
+<script>
+(function(a,m,o,c,r,m){
+  a[m]={
+    id:"1079137",
+    hash:"b8fb8e64814344f91c3a8e77561aee0d916db58bd7698aed2ffa3f0762ff0718",
+    locale:"es",
+    setMeta:function(p){this.params=(this.params||[]).concat([p])}
+  };
+  a[o]=a[o]||function(){(a[o].q=a[o].q||[]).push(arguments)};
+  var d=a.document,s=d.createElement('script');
+  s.async=true;
+  s.id=m+'_script';
+  s.src='https://gso.kommo.com/js/button.js';
+  d.head&&d.head.appendChild(s);
+}(window,0,'crmPlugin',0,0,'crm_plugin'));
+</script>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<!-- Facebook Pixel -->
+<script>
+!function(f,b,e,v,n,t,s){
+if(f.fbq)return;
+n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];
+t=b.createElement(e);t.async=!0;t.src=v;
+s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s);
+}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
 
-  <style>
-    *{margin:0;padding:0;box-sizing:border-box;font-family:'Montserrat',sans-serif;}
-    body{min-height:100vh;background:radial-gradient(circle at top, rgba(255,190,0,.18) 0%, rgba(0,0,0,0) 35%), linear-gradient(180deg, #0a0a0a 0%, #050505 100%);color:white;display:flex;justify-content:center;align-items:center;overflow-x:hidden;}
-    .container{width:100%;max-width:430px;padding:30px 20px 40px;text-align:center;position:relative;}
-    .badge{display:inline-block;padding:10px 22px;border:1px solid rgba(255,202,44,.45);border-radius:40px;color:#ffca2c;font-size:14px;font-weight:700;letter-spacing:1px;margin-bottom:28px;background:rgba(255,202,44,.04);box-shadow:0 0 15px rgba(255,202,44,.08);}
-    .logo{font-size:64px;font-weight:900;line-height:1;letter-spacing:2px;color:#ffca2c;text-shadow:0 0 20px rgba(255,202,44,.12);}
-    .sub{margin-top:14px;margin-bottom:36px;color:#d8d8d8;font-size:18px;letter-spacing:4px;font-weight:600;}
-    .bonus{border:2px solid rgba(255,202,44,.55);border-radius:28px;padding:28px 20px;background:linear-gradient(180deg, rgba(255,202,44,.08), rgba(255,202,44,.03));box-shadow:0 0 30px rgba(255,202,44,.10), inset 0 0 30px rgba(255,202,44,.03);margin-bottom:26px;position:relative;}
-    .bonus small{display:block;color:#ffca2c;font-size:14px;font-weight:800;letter-spacing:2px;margin-bottom:10px;}
-    .bonus h2{font-size:64px;line-height:1;font-weight:900;color:#ffca2c;text-shadow:0 0 20px rgba(255,202,44,.12);}
-    .bonus p{margin-top:14px;font-size:18px;color:#e4e4e4;font-weight:600;}
-    .gift{position:absolute;right:22px;top:18px;font-size:34px;}
-    .btn{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;padding:20px 24px;margin-top:22px;border-radius:999px;text-decoration:none;color:white;font-size:22px;font-weight:900;background:#22d95c;box-shadow:0 0 18px rgba(34,217,92,.45), 0 0 36px rgba(34,217,92,.18);transition:transform .15s ease, box-shadow .15s ease;cursor: pointer;}
-    .btn:hover{transform:translateY(-1px) scale(1.01);box-shadow:0 0 24px rgba(34,217,92,.55), 0 0 44px rgba(34,217,92,.22);}
-    .info{margin-top:12px;font-size:14px;color:#bdbdbd;}
-    .features{display:flex;justify-content:space-between;gap:12px;margin-top:44px;text-align:left;}
-    .item{flex:1;min-width:0;}
-    .item h4{color:#ffca2c;font-size:14px;font-weight:800;margin-bottom:6px;}
-    .item p{color:#d0d0d0;font-size:12px;line-height:1.35;}
-    .footer{margin-top:38px;color:#9a9a9a;font-size:13px;font-weight:600;}
-    @media (max-width:480px){.logo{font-size:56px;}.bonus h2{font-size:56px;}.btn{font-size:20px;padding:18px 20px;}}
-  </style>
+fbq('init', '1380301734243105');
+fbq('track', 'PageView');
+</script>
+<noscript>
+  <img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=1380301734243105&ev=PageView&noscript=1"/>
+</noscript>
+
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html, body{
+    height: 100%;
+    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background: #0a0a0a;
+    color: #fff;
+  }
+
+  .wrapper{
+    height: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hero{
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    min-height: 0;
+  }
+  .hero img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+  }
+
+  .cta-bar{
+    background: #0a0a0a;
+    padding: 16px 20px 22px;
+    border-top: 1px solid rgba(212,175,55,0.15);
+    flex-shrink: 0;
+  }
+
+  .ops{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #D4AF37;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  .ops::before{
+    content: '';
+    width: 8px;
+    height: 8px;
+    background: #D4AF37;
+    border-radius: 50%;
+    animation: pulseDot 1.4s infinite;
+  }
+
+  .bonus-line{
+    text-align: center;
+    margin-bottom: 14px;
+  }
+  .bonus-line .label{
+    font-size: 12px;
+    color: #E8C872;
+    letter-spacing: 1.5px;
+    font-weight: 600;
+  }
+  .bonus-line .value{
+    font-size: 30px;
+    font-weight: 900;
+    color: #FFD700;
+    line-height: 1.1;
+    animation: glowText 2.4s ease-in-out infinite;
+  }
+  .bonus-line .sub{
+    font-size: 13px;
+    color: #aaa;
+  }
+
+  .wa-btn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: linear-gradient(135deg, #C9A227, #D4AF37, #E8C872);
+    color: #1a1a1a;
+    border: none;
+    border-radius: 14px;
+    padding: 16px 20px;
+    font-size: 17px;
+    font-weight: 800;
+    width: 100%;
+    cursor: pointer;
+    box-shadow: 0 8px 28px rgba(212,175,55,0.45);
+    animation: shake 2.8s ease-in-out infinite, glowBtn 2s ease-in-out infinite;
+  }
+  .wa-btn:active{
+    transform: scale(0.97);
+    animation: none;
+  }
+  .wa-btn svg{
+    width: 24px;
+    height: 24px;
+    fill: #1a1a1a;
+  }
+
+  .footer-text{
+    text-align: center;
+    margin-top: 10px;
+    font-size: 12px;
+    color: #888;
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    8%  { transform: translateX(-4px); }
+    16% { transform: translateX(4px); }
+    24% { transform: translateX(-3px); }
+    32% { transform: translateX(3px); }
+    40% { transform: translateX(0); }
+  }
+
+  @keyframes glowBtn {
+    0%, 100% { box-shadow: 0 8px 28px rgba(212,175,55,0.45); }
+    50% { box-shadow: 0 8px 36px rgba(255,215,0,0.65); }
+  }
+
+  @keyframes glowText {
+    0%, 100% { text-shadow: 0 0 0 transparent; }
+    50% { text-shadow: 0 0 20px rgba(255,215,0,0.6); }
+  }
+
+  @keyframes pulseDot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.85); }
+  }
+
+  #kommoChatFrame{
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.95);
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.3s;
+    z-index: 9999;
+  }
+  #kommoChatFrame.is-open{
+    visibility: visible;
+    opacity: 1;
+  }
+  #kommoChatFrame iframe{
+    width: 100% !important;
+    height: 100% !important;
+    border: 0 !important;
+  }
+  #kommoClose{
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    width: 44px;
+    height: 44px;
+    border: none;
+    border-radius: 50%;
+    background: #222;
+    color: #fff;
+    font-size: 20px;
+    display: none;
+    z-index: 10000;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+  }
+  #kommoClose.is-open{
+    display: flex;
+  }
+</style>
 </head>
-
 <body>
 
-  <div class="container">
+<div class="wrapper">
 
-    <div class="badge">🟢 ATENCIÓN 24HS · ARGENTINA</div>
-    <div class="logo">LUCKY CROWN</div>
-    <div class="sub">ENTRETENIMIENTO ONLINE</div>
-
-    <div class="bonus">
-      <div class="gift">🎁</div>
-      <small>BONO DE BIENVENIDA</small>
-      <h2>50% EXTRA</h2>
-      <p>En tu primer depósito · Juegos originales</p>
-    </div>
-
-    <a class="btn" id="btn1">📲 CREÁ TU USUARIO GRATIS</a>
-    <div class="info">Sin costo · Registro en minutos · Bono inmediato</div>
-
-    <a class="btn" id="btn2">📲 REGISTRATE GRATIS AHORA</a>
-
-    <div class="features">
-      <div class="item"><h4>🔒 SEGURO</h4><p>Plataforma 100% segura</p></div>
-      <div class="item"><h4>⚡ RÁPIDO</h4><p>Depósitos y retiros al instante</p></div>
-      <div class="item"><h4>🎧 SOPORTE 24HS</h4><p>Estamos para ayudarte</p></div>
-    </div>
-
-    <div class="footer">+18 · Juega con responsabilidad</div>
+  <div class="hero">
+    <img src="golden-spin-hero.jpg" alt="Golden Spin - Bono 100% Extra">
   </div>
 
-  <script>
-    const contactos = [
-        {
-            numero: "+5492236910265",
-            mensaje: "Hola, quiero mas informacion y reclamar el bonus."
-        },
-    ];
+  <div class="cta-bar">
+    <div class="ops">Operadores en línea ahora</div>
 
-    let contactoActual = contactos[0];
+    <div class="bonus-line">
+      <div class="label">BONO DE BIENVENIDA</div>
+      <div class="value">100% EXTRA</div>
+      <div class="sub">en tu primer depósito</div>
+    </div>
 
-    function actualizarContacto() {
-        contactoActual = contactos[Math.floor(Math.random() * contactos.length)];
-        console.log("Contacto rotado a:", contactoActual.numero);
+    <button class="wa-btn" id="openChatBtn">
+      <svg viewBox="0 0 24 24">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+      </svg>
+      Escribinos por WhatsApp
+    </button>
+
+    <div class="footer-text">Respuesta inmediata • Atención 24 hs</div>
+  </div>
+
+</div>
+
+<div id="kommoChatFrame"></div>
+<button id="kommoClose">✕</button>
+
+<script>
+const frame = document.getElementById('kommoChatFrame');
+const closeBtn = document.getElementById('kommoClose');
+const openBtn = document.getElementById('openChatBtn');
+let ready = false;
+let pending = false;
+
+function fireContactEvent() {
+  try {
+    if (typeof fbq === 'function') {
+      fbq('track', 'Contact');
+      fbq('trackCustom', 'ClickWhatsAppButton');
+      console.log('✅ Evento Contact enviado');
+    } else {
+      console.log('❌ fbq no está disponible todavía');
     }
+  } catch (e) {
+    console.log('Error pixel:', e);
+  }
+}
 
-    function abrirWhatsApp() {
-        const texto = encodeURIComponent(contactoActual.mensaje);
-        const url = `https://wa.me/${contactoActual.numero}?text=${texto}`;
-        
-        window.open(url, '_blank');
-        fbq('track', 'Contact');
-    }
+function openReal(){
+  frame.classList.add('is-open');
+  closeBtn.classList.add('is-open');
+  try{ crmPlugin('runChatShow'); }catch(e){}
+  fireContactEvent();
+}
 
-    // Asignar click a ambos botones
-    document.getElementById('btn1').addEventListener('click', abrirWhatsApp);
-    document.getElementById('btn2').addEventListener('click', abrirWhatsApp);
+function openChat(){
+  if(ready){ openReal(); }
+  else{ pending = true; }
+}
 
-    // Rotación automática cada 5 minutos
-    setInterval(() => {
-        actualizarContacto();
-    }, 5 * 60 * 1000);
+function closeChat(){
+  frame.classList.remove('is-open');
+  closeBtn.classList.remove('is-open');
+  try{ crmPlugin('runChatHide'); }catch(e){}
+}
 
-    // Rotar también al cargar la página
-    actualizarContacto();
-  </script>
+function bind(){
+  if(typeof crmPlugin !== 'function'){
+    setTimeout(bind, 150);
+    return;
+  }
+  crmPlugin('onChatReady', function(){
+    ready = true;
+    if(pending){ pending = false; openReal(); }
+  });
+}
+
+openBtn.addEventListener('click', openChat);
+closeBtn.addEventListener('click', closeChat);
+bind();
+</script>
 
 </body>
 </html>
