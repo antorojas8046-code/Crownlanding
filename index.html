@@ -53,7 +53,6 @@ window.crmPluginConfig = {
 
 <!-- =========================================================
      KOMMO
-     
      CHATWEB: 1079229
      ========================================================= -->
 
@@ -108,25 +107,19 @@ window.crmPluginConfig = {
 
 
 <!-- =========================================================
-     META PIXEL
-     
+     META PIXEL 1GIROX
+
      PIXEL: 1433903062132651
-     
-     ESTE HTML SOLAMENTE ENVÍA:
-     
-     PageView
-     
-     NO Contact
-     NO ClickWhatsAppButton
-     NO Contact al abrir ChatWeb
-     
-     CONTACT SE ENVÍA EXCLUSIVAMENTE:
-     
-     KOMMO
-        ↓
-     CLOUDFLARE WORKER
-        ↓
-     META CONVERSIONS API
+
+     EVENTOS:
+
+     1. PageView
+     2. Contact al abrir ChatWeb
+
+     NO:
+     - Cloudflare
+     - CAPI
+     - ClickWhatsAppButton
      ========================================================= -->
 
 <script>
@@ -134,21 +127,6 @@ window.crmPluginConfig = {
 (function(){
 
   'use strict';
-
-
-  /* =========================================================
-     CARGAR FACEBOOK PIXEL
-     ========================================================= */
-
-  if (window.fbq) {
-
-    console.log(
-      '⚠️ Facebook Pixel ya estaba cargado'
-    );
-
-    return;
-
-  }
 
 
   !function(f,b,e,v,n,t,s){
@@ -201,9 +179,9 @@ window.crmPluginConfig = {
   );
 
 
-  /* =========================================================
-     INICIALIZAR PIXEL
-     ========================================================= */
+  /*
+   * PIXEL 1GIROX
+   */
 
   fbq(
     'init',
@@ -211,9 +189,9 @@ window.crmPluginConfig = {
   );
 
 
-  /* =========================================================
-     ÚNICO EVENTO DEL NAVEGADOR
-     ========================================================= */
+  /*
+   * PAGEVIEW
+   */
 
   fbq(
     'track',
@@ -222,14 +200,20 @@ window.crmPluginConfig = {
 
 
   console.log(
-    '✅ 1GIROX - META PIXEL CARGADO'
+    '========================================'
   );
-
 
   console.log(
-    '✅ 1GIROX - PAGEVIEW ENVIADO'
+    '✅ 1GIROX PIXEL INICIALIZADO'
   );
 
+  console.log(
+    '✅ 1GIROX PAGEVIEW ENVIADO'
+  );
+
+  console.log(
+    '========================================'
+  );
 
 })();
 
@@ -466,9 +450,6 @@ body{
 
 /* =========================================================
    BOTÓN CHAT
-     
-   IMPORTANTE:
-   NO dispara ningún evento de Meta.
    ========================================================= */
 
 .wa-btn{
@@ -687,8 +668,8 @@ body{
   opacity:0;
 
   transition:
-    opacity 0.3s ease,
-    visibility 0.3s ease;
+    opacity 0.1s ease,
+    visibility 0.1s ease;
 
   z-index:9999;
 
@@ -824,12 +805,6 @@ body{
     </div>
 
 
-    <!-- =====================================================
-         BOTÓN VISUAL
-         
-         NO DISPARA EVENTOS DE META.
-         ===================================================== -->
-
     <button
       class="wa-btn"
       id="openChatBtn"
@@ -907,21 +882,104 @@ const openBtn =
 
 let ready = false;
 
+let contactSent = false;
+
+
+/* =========================================================
+   CONTACT
+
+   Se dispara UNA SOLA VEZ cuando
+   el ChatWeb se abre.
+
+   No utiliza Cloudflare.
+   No utiliza CAPI.
+   ========================================================= */
+
+function sendContactEvent(){
+
+  if(contactSent){
+
+    console.log(
+      '⚠️ 1GIROX CONTACT YA FUE ENVIADO'
+    );
+
+    return;
+
+  }
+
+
+  if(
+    typeof window.fbq !==
+    'function'
+  ){
+
+    console.log(
+      '⏳ Meta Pixel todavía no está listo'
+    );
+
+    setTimeout(
+      sendContactEvent,
+      100
+    );
+
+    return;
+
+  }
+
+
+  try{
+
+    window.fbq(
+      'track',
+      'Contact'
+    );
+
+
+    contactSent = true;
+
+
+    console.log(
+      '========================================'
+    );
+
+    console.log(
+      '✅ 1GIROX CONTACT ENVIADO A META'
+    );
+
+    console.log(
+      'PIXEL: 1433903062132651'
+    );
+
+    console.log(
+      'EVENTO: Contact'
+    );
+
+    console.log(
+      '========================================'
+    );
+
+
+  }catch(error){
+
+    console.error(
+      '❌ ERROR ENVIANDO CONTACT 1GIROX:',
+      error
+    );
+
+  }
+
+}
+
 
 /* =========================================================
    ABRIR CHATWEB
-     
-   IMPORTANTE:
-     
-   NO fbq()
-   NO Contact
-   NO ClickWhatsAppButton
-     
-   Abrir el ChatWeb NO genera ninguna
-   conversión de Meta.
    ========================================================= */
 
 function openReal(){
+
+  /*
+   * Mostrar el contenedor inmediatamente.
+   */
 
   frame.classList.add(
     'is-open'
@@ -933,6 +991,17 @@ function openReal(){
   );
 
 
+  /*
+   * CONTACT SE DISPARA AL ABRIR
+   */
+
+  sendContactEvent();
+
+
+  /*
+   * Abrir ChatWeb Kommo.
+   */
+
   try{
 
     crmPlugin(
@@ -941,14 +1010,14 @@ function openReal(){
 
 
     console.log(
-      '✅ ChatWeb Kommo abierto'
+      '✅ 1GIROX CHATWEB ABIERTO'
     );
 
 
   }catch(error){
 
     console.error(
-      '❌ Error abriendo ChatWeb Kommo:',
+      '❌ ERROR ABRIENDO CHATWEB 1GIROX:',
       error
     );
 
@@ -959,11 +1028,6 @@ function openReal(){
 
 /* =========================================================
    ABRIR MANUALMENTE
-     
-   Este botón solamente vuelve a abrir
-   el ChatWeb si fue cerrado.
-     
-   NO dispara ningún evento Meta.
    ========================================================= */
 
 function openChat(){
@@ -971,7 +1035,7 @@ function openChat(){
   if(!ready){
 
     console.log(
-      '⏳ Kommo todavía no está listo'
+      '⏳ KOMMO TODAVÍA NO ESTÁ LISTO'
     );
 
     return;
@@ -1024,7 +1088,7 @@ function bind(){
 
     setTimeout(
       bind,
-      150
+      100
     );
 
     return;
@@ -1033,7 +1097,7 @@ function bind(){
 
 
   console.log(
-    '⏳ Esperando ChatWeb Kommo...'
+    '⏳ ESPERANDO CHATWEB 1GIROX...'
   );
 
 
@@ -1045,27 +1109,17 @@ function bind(){
 
 
       console.log(
-        '✅ ChatWeb Kommo listo'
+        '✅ CHATWEB 1GIROX LISTO'
       );
 
 
-      /* ===================================================
-         APERTURA AUTOMÁTICA
-         
-         EXACTAMENTE 300 ms DESPUÉS
-         DE QUE KOMMO ESTÉ LISTO.
-         
-         NO GENERA CONTACT.
-         =================================================== */
+      /*
+       * ABRIR AUTOMÁTICAMENTE
+       *
+       * SIN 300 MS.
+       */
 
-      setTimeout(
-        function(){
-
-          openReal();
-
-        },
-        300
-      );
+      openReal();
 
     }
   );
