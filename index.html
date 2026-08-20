@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
 
 <meta charset="UTF-8">
@@ -14,11 +15,13 @@
   content="#0a0a0a"
 >
 
-<title>Chat</title>
+<title>Cargando chat...</title>
 
 
 <!-- =========================================================
-     KOMMO - CONFIGURACIÓN
+     KOMMO
+     CHATWEB 1GIROX
+     ID: 1079229
      ========================================================= -->
 
 <script>
@@ -50,11 +53,6 @@ window.crmPluginConfig = {
 
 </script>
 
-
-<!-- =========================================================
-     KOMMO 1GIROX
-     CHATWEB ID: 1079229
-     ========================================================= -->
 
 <script>
 
@@ -108,16 +106,14 @@ window.crmPluginConfig = {
 
 <!-- =========================================================
      META PIXEL 1GIROX
-
-     PIXEL: 1433903062132651
-
-     SOLO:
-     1. PageView
-
-     NO CONTACT DESDE EL NAVEGADOR.
-
-     LA CONVERSIÓN SE ENVÍA DESDE CLOUDFLARE
-     CUANDO KOMMO RECIBE EL PRIMER MENSAJE ENTRANTE.
+     
+     SOLO PAGEVIEW
+     
+     IMPORTANTE:
+     NO CONTACT
+     NO CONVERSATION
+     NO CLICK
+     NO EVENTO AL ABRIR CHAT
      ========================================================= -->
 
 <script>
@@ -175,9 +171,7 @@ window.crmPluginConfig = {
   );
 
 
-  /*
-   * PIXEL 1GIROX
-   */
+  <!-- PIXEL 1GIROX -->
 
   fbq(
     'init',
@@ -185,9 +179,7 @@ window.crmPluginConfig = {
   );
 
 
-  /*
-   * PAGEVIEW
-   */
+  <!-- PAGEVIEW -->
 
   fbq(
     'track',
@@ -204,11 +196,15 @@ window.crmPluginConfig = {
   );
 
   console.log(
-    '✅ 1GIROX PAGEVIEW ENVIADO'
+    '✅ PAGEVIEW ENVIADO'
   );
 
   console.log(
-    '❌ NO SE ENVÍA CONTACT DESDE EL HTML'
+    '🚫 CONTACT NO SE ENVÍA'
+  );
+
+  console.log(
+    '🚫 CONVERSATION NO SE ENVÍA DESDE EL NAVEGADOR'
   );
 
   console.log(
@@ -226,13 +222,13 @@ window.crmPluginConfig = {
 
 <noscript>
 
-  <img
-    height="1"
-    width="1"
-    style="display:none"
-    src="https://www.facebook.com/tr?id=1433903062132651&ev=PageView&noscript=1"
-    alt=""
-  >
+<img
+  height="1"
+  width="1"
+  style="display:none"
+  src="https://www.facebook.com/tr?id=1433903062132651&ev=PageView&noscript=1"
+  alt=""
+>
 
 </noscript>
 
@@ -255,7 +251,7 @@ window.crmPluginConfig = {
 
 
 /* =========================================================
-   HTML / BODY
+   BODY
    ========================================================= */
 
 html,
@@ -269,11 +265,20 @@ body{
 
   background:#0a0a0a;
 
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+
 }
 
 
 /* =========================================================
-   CHATWEB
+   CHAT FRAME
    ========================================================= */
 
 #kommoChatFrame{
@@ -288,35 +293,14 @@ body{
 
   background:#0a0a0a;
 
-  visibility:hidden;
+  visibility:visible;
 
-  opacity:0;
-
-  transition:
-    opacity 0.1s ease,
-    visibility 0.1s ease;
+  opacity:1;
 
   z-index:9999;
 
 }
 
-
-/* =========================================================
-   CHAT ABIERTO
-   ========================================================= */
-
-#kommoChatFrame.is-open{
-
-  visibility:visible;
-
-  opacity:1;
-
-}
-
-
-/* =========================================================
-   IFRAME KOMMO
-   ========================================================= */
 
 #kommoChatFrame iframe{
 
@@ -326,16 +310,14 @@ body{
 
   border:0 !important;
 
-  display:block !important;
-
 }
 
 
 /* =========================================================
-   ESTADO DE CARGA
+   LOADING
    ========================================================= */
 
-#loading{
+#chatLoading{
 
   position:fixed;
 
@@ -343,33 +325,32 @@ body{
 
   display:flex;
 
+  flex-direction:column;
+
   align-items:center;
 
   justify-content:center;
 
   background:#0a0a0a;
 
-  color:#aaa;
+  color:#fff;
 
-  font-family:
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    Roboto,
-    Helvetica,
-    Arial,
-    sans-serif;
+  z-index:10000;
 
-  font-size:14px;
-
-  z-index:9998;
+  transition:
+    opacity .25s ease,
+    visibility .25s ease;
 
 }
 
 
-#loading.hidden{
+#chatLoading.hidden{
 
-  display:none;
+  opacity:0;
+
+  visibility:hidden;
+
+  pointer-events:none;
 
 }
 
@@ -380,13 +361,13 @@ body{
 
 .spinner{
 
-  width:22px;
+  width:38px;
 
-  height:22px;
+  height:38px;
 
   border:
 
-    2px solid
+    3px solid
     rgba(212,175,55,0.20);
 
   border-top-color:#D4AF37;
@@ -394,12 +375,35 @@ body{
   border-radius:50%;
 
   animation:
-    spin 0.8s linear infinite;
+    spin .8s linear infinite;
+
+  margin-bottom:14px;
 
 }
 
 
+.loadingText{
+
+  font-size:14px;
+
+  color:#aaa;
+
+  letter-spacing:.2px;
+
+}
+
+
+/* =========================================================
+   ANIMACIÓN
+   ========================================================= */
+
 @keyframes spin{
+
+  from{
+
+    transform:rotate(0deg);
+
+  }
 
   to{
 
@@ -418,21 +422,27 @@ body{
 
 
 <!-- =========================================================
-     CARGANDO CHAT
-     ========================================================= -->
-
-<div id="loading">
-
-  <div class="spinner"></div>
-
-</div>
-
-
-<!-- =========================================================
-     CONTENEDOR CHATWEB
+     CHATWEB
      ========================================================= -->
 
 <div id="kommoChatFrame"></div>
+
+
+<!-- =========================================================
+     CARGANDO CHAT
+     ========================================================= -->
+
+<div id="chatLoading">
+
+  <div class="spinner"></div>
+
+  <div class="loadingText">
+
+    Cargando chat...
+
+  </div>
+
+</div>
 
 
 <script>
@@ -449,51 +459,28 @@ const frame =
 
 const loading =
   document.getElementById(
-    'loading'
+    'chatLoading'
   );
 
 
-let ready = false;
+/* =========================================================
+   OCULTAR LOADING
+   ========================================================= */
+
+function hideLoading(){
+
+  loading.classList.add(
+    'hidden'
+  );
+
+}
 
 
 /* =========================================================
    ABRIR CHATWEB
    ========================================================= */
 
-function openChat(){
-
-  if(!ready){
-
-    console.log(
-      '⏳ KOMMO TODAVÍA NO ESTÁ LISTO'
-    );
-
-    return;
-
-  }
-
-
-  /*
-   * Mostrar ChatWeb.
-   */
-
-  frame.classList.add(
-    'is-open'
-  );
-
-
-  /*
-   * Ocultar pantalla de carga.
-   */
-
-  loading.classList.add(
-    'hidden'
-  );
-
-
-  /*
-   * Abrir ChatWeb Kommo.
-   */
+function openChatWeb(){
 
   try{
 
@@ -503,18 +490,41 @@ function openChat(){
 
 
     console.log(
-      '✅ 1GIROX CHATWEB ABIERTO AUTOMÁTICAMENTE'
+      '========================================'
     );
 
     console.log(
-      '✅ CONVERSIÓN SERÁ PROCESADA POR CLOUDFLARE AL RECIBIR MENSAJE'
+      '✅ 1GIROX CHATWEB ABIERTO'
+    );
+
+    console.log(
+      '🚫 NO CONTACT'
+    );
+
+    console.log(
+      '🚫 NO EVENTO DESDE NAVEGADOR'
+    );
+
+    console.log(
+      '========================================'
+    );
+
+
+    /*
+     * Esperamos un momento para permitir
+     * que Kommo inserte el iframe.
+     */
+
+    setTimeout(
+      watchIframe,
+      100
     );
 
 
   }catch(error){
 
     console.error(
-      '❌ ERROR ABRIENDO CHATWEB 1GIROX:',
+      '❌ ERROR ABRIENDO CHATWEB:',
       error
     );
 
@@ -524,10 +534,72 @@ function openChat(){
 
 
 /* =========================================================
+   DETECTAR IFRAME
+   ========================================================= */
+
+function watchIframe(){
+
+  const iframe =
+    frame.querySelector(
+      'iframe'
+    );
+
+
+  if(iframe){
+
+    console.log(
+      '✅ IFRAME CHATWEB DETECTADO'
+    );
+
+
+    iframe.addEventListener(
+      'load',
+      function(){
+
+        console.log(
+          '✅ CHATWEB TERMINÓ DE CARGAR'
+        );
+
+        hideLoading();
+
+      }
+    );
+
+
+    /*
+     * Fallback por si el iframe
+     * ya estaba cargado.
+     */
+
+    setTimeout(
+      hideLoading,
+      1200
+    );
+
+
+    return;
+
+  }
+
+
+  /*
+   * Todavía no existe el iframe.
+   * Seguimos esperando.
+   */
+
+  setTimeout(
+    watchIframe,
+    100
+  );
+
+}
+
+
+/* =========================================================
    ESPERAR A KOMMO
    ========================================================= */
 
-function bind(){
+function bindKommo(){
 
   if(
     typeof crmPlugin !==
@@ -535,7 +607,7 @@ function bind(){
   ){
 
     setTimeout(
-      bind,
+      bindKommo,
       100
     );
 
@@ -553,19 +625,20 @@ function bind(){
     'onChatReady',
     function(){
 
-      ready = true;
-
-
       console.log(
-        '✅ CHATWEB 1GIROX LISTO'
+        '✅ KOMMO CHATWEB LISTO'
       );
 
 
       /*
-       * Abrir inmediatamente.
+       * ABRIR AUTOMÁTICAMENTE
+       *
+       * No hay botón.
+       * No hay landing.
+       * No hay Contact.
        */
 
-      openChat();
+      openChatWeb();
 
     }
   );
@@ -577,10 +650,11 @@ function bind(){
    INICIAR
    ========================================================= */
 
-bind();
+bindKommo();
 
 </script>
 
 
 </body>
+
 </html>
