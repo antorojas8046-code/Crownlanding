@@ -2,7 +2,7 @@ const crypto = require("crypto");
 
 const PIXEL_ID = "1734115240991081";
 const META_API_VERSION = "v25.0";
-const TEST_EVENT_CODE = "TEST12743";
+const TEST_EVENT_CODE: "TEST12743";
 
 async function readRawBody(req) {
   const chunks = [];
@@ -97,7 +97,7 @@ async function sendContactToMeta(payload, deliveryId) {
     },
     body: JSON.stringify({
       data: [event],
-      test_event_code: TEST_EVENT_CODE
+      test_event_code: "TEST12743"
     })
   });
 
