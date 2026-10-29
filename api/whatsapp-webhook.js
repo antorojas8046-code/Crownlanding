@@ -2,6 +2,7 @@ const crypto = require("crypto");
 
 const PIXEL_ID = "1734115240991081";
 const META_API_VERSION = "v25.0";
+const TEST_EVENT_CODE = "TEST12743";
 
 async function readRawBody(req) {
   const chunks = [];
@@ -81,8 +82,6 @@ async function sendContactToMeta(payload, deliveryId) {
     user_data: userData
   };
 
-  // Reutilizar el mismo ID en reintentos ayuda a identificar
-  // el mismo mensaje. No reemplaza una deduplicación persistente.
   if (messageId || deliveryId) {
     event.event_id = messageId || deliveryId;
   }
@@ -97,8 +96,8 @@ async function sendContactToMeta(payload, deliveryId) {
       "Content-Type": "application/json"
     },
     body: JSON.stringify({
-      data: [event]
-      test_event_code: "TEST12743"
+      data: [event],
+      test_event_code: TEST_EVENT_CODE
     })
   });
 
@@ -122,7 +121,8 @@ async function sendContactToMeta(payload, deliveryId) {
 
   console.log("Meta Contact accepted", {
     eventsReceived: result.events_received,
-    eventId: event.event_id || null
+    eventId: event.event_id || null,
+    testMode: true
   });
 
   return result;
@@ -184,7 +184,8 @@ async function handler(req, res) {
       ok: true,
       event: "Contact",
       received: true,
-      sentToMeta: true
+      sentToMeta: true,
+      testMode: true
     });
   } catch (error) {
     console.error("Webhook processing failed", {
