@@ -52,12 +52,15 @@ async function sendContactToMeta(payload) {
   const data = payload.data || {};
   const messageText = String(data.text?.body || "");
 
-  // Solo procesar mensajes que tengan una referencia de la landing.
+  // Solo procesar mensajes que contengan una referencia
+  // generada por la landing.
   const match = messageText.match(
     /\bRef:\s*([A-Z0-9]{8,32})\b/i
   );
 
   if (!match) {
+    console.log("WhatsApp message ignored: no landing reference");
+
     return {
       sent: false,
       reason: "No landing reference"
@@ -72,7 +75,9 @@ async function sendContactToMeta(payload) {
   }
 
   const phone = String(data.from || "").replace(/\D/g, "");
-  const userId = String(data.user_id || "").trim().toLowerCase();
+  const userId = String(data.user_id || "")
+    .trim()
+    .toLowerCase();
 
   const userData = {};
 
@@ -110,45 +115,78 @@ async function sendContactToMeta(payload) {
     `https://graph.facebook.com/${META_API_VERSION}/${PIXEL_ID}/events` +
     `?access_token=${encodeURIComponent(token)}`;
 
+  const requestBody = {
+    data: [event],
+    test_event_code: TEST_EVENT_CODE
+  };
+
+  console.log("Sending Contact to Meta", {
+    eventName: event.event_name,
+    eventId: messageId,
+    reference,
+    actionSource: event.action_source,
+    testEventCode: TEST_EVENT_CODE
+  });
+
   const response = await fetch(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({
-      data: [event],
-      test_event_code: TEST_EVENT_CODE
-    })
+    body: JSON.stringify(requestBody)
   });
 
-  const result = await response.json();
+  // Leer la respuesta completa para diagnosticar la recepción.
+  const responseText = await response.text();
+
+  let result;
+
+  try {
+    result = JSON.parse(responseText);
+  } catch {
+    result = {
+      unparsedResponse: responseText
+    };
+  }
 
   if (!response.ok || result.error) {
     const metaError = result.error || {};
 
     console.error("Meta CAPI rejected Contact", {
-      status: response.status,
+      httpStatus: response.status,
+      response: result,
       code: metaError.code || null,
       subcode: metaError.error_subcode || null,
       type: metaError.type || null,
       message: metaError.message || null,
       details: metaError.error_data?.details || null,
-      trace: metaError.fbtrace_id || null
+      fbtrace_id: metaError.fbtrace_id || result.fbtrace_id || null
     });
 
-    throw new Error("Meta CAPI request failed");
+    throw new Error(
+      `Meta CAPI request failed with HTTP ${response.status}`
+    );
   }
 
-  console.log("Meta Contact accepted", {
-    eventsReceived: result.events_received,
+  // Registro de diagnóstico completo de la respuesta de Meta.
+  console.log("META CAPI FULL RESPONSE", {
+    httpStatus: response.status,
+    eventsReceived: result.events_received ?? null,
+    messages: result.messages ?? [],
+    fbtrace_id: result.fbtrace_id ?? null,
+    eventName: event.event_name,
     eventId: messageId,
-    reference: reference,
-    testMode: true
+    reference,
+    testEventCodeSent: TEST_EVENT_CODE,
+    response: result
   });
 
   return {
     sent: true,
-    eventsReceived: result.events_received
+    eventsReceived: result.events_received ?? null,
+    messages: result.messages ?? [],
+    fbtrace_id: result.fbtrace_id ?? null,
+    testMode: true
   };
 }
 
@@ -207,6 +245,9 @@ async function handler(req, res) {
       received: true,
       sentToMeta: result.sent,
       reason: result.reason || null,
+      eventsReceived: result.eventsReceived ?? null,
+      messages: result.messages ?? [],
+      fbtrace_id: result.fbtrace_id ?? null,
       testMode: true
     });
   } catch (error) {
