@@ -1,5 +1,8 @@
 const crypto = require("crypto");
 
+const PIXEL_ID = "1734115240991081";
+const META_API_VERSION = "v25.0";
+
 async function readRawBody(req) {
   const chunks = [];
 
@@ -31,9 +34,93 @@ function verifySignature(rawBody, signature, secret) {
   );
 }
 
+function sha256(value) {
+  return crypto
+    .createHash("sha256")
+    .update(value)
+    .digest("hex");
+}
+
+async function sendContactToMeta(payload, deliveryId) {
+  const token = process.env.META_CAPI_TOKEN;
+
+  if (!token) {
+    throw new Error("Missing Meta CAPI token");
+  }
+
+  const data = payload.data || {};
+  const phone = String(data.from || "").replace(/\D/g, "");
+  const userId = String(data.user_id || "").trim().toLowerCase();
+  const messageId = String(data.message_id || "").trim();
+
+  // Necesitamos un identificador válido para asociar el evento.
+  if (!phone && !userId) {
+    throw new Error("No matching user identifier");
+  }
+
+  const userData = {};
+
+  if (phone) {
+    userData.ph = [sha256(phone)];
+  }
+
+  if (userId) {
+    userData.external_id = [sha256(userId)];
+  }
+
+  const timestamp = Number(data.timestamp);
+  const eventTime =
+    Number.isFinite(timestamp) && timestamp > 0
+      ? Math.floor(timestamp)
+      : Math.floor(Date.now() / 1000);
+
+  const event = {
+    event_name: "Contact",
+    event_time: eventTime,
+    event_id: messageId || deliveryId,
+    action_source: "chat",
+    messaging_channel: "whatsapp",
+    user_data: userData
+  };
+
+  const response = await fetch(
+    `https://graph.facebook.com/${META_API_VERSION}/${PIXEL_ID}/events`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        access_token: token,
+        data: [event]
+      })
+    }
+  );
+
+  const result = await response.json();
+
+  if (!response.ok || result.error) {
+    console.error("Meta CAPI rejected Contact", {
+      status: response.status,
+      code: result.error?.code || null,
+      type: result.error?.type || null
+    });
+
+    throw new Error("Meta CAPI request failed");
+  }
+
+  console.log("Meta Contact accepted", {
+    eventsReceived: result.events_received,
+    eventId: event.event_id
+  });
+
+  return result;
+}
+
 async function handler(req, res) {
   if (req.method !== "POST") {
     res.setHeader("Allow", "POST");
+
     return res.status(405).json({
       ok: false,
       error: "Method not allowed"
@@ -44,6 +131,7 @@ async function handler(req, res) {
 
   if (!secret) {
     console.error("Missing webhook secret");
+
     return res.status(500).json({
       ok: false,
       error: "Webhook secret not configured"
@@ -65,31 +153,33 @@ async function handler(req, res) {
     const eventType =
       req.headers["x-zapclaw-event"] || payload.event;
 
-    if (eventType === "message.received") {
-      console.log("WhatsAppMessageReceived", {
-        event: eventType,
-        deliveryId: req.headers["x-zapclaw-delivery"] || null,
-        received: true
-      });
-
+    if (eventType !== "message.received") {
       return res.status(200).json({
         ok: true,
-        event: "WhatsAppMessageReceived",
-        received: true
+        ignored: true,
+        event: eventType || "unknown"
       });
     }
 
+    const deliveryId =
+      req.headers["x-zapclaw-delivery"] || null;
+
+    await sendContactToMeta(payload, deliveryId);
+
     return res.status(200).json({
       ok: true,
-      ignored: true,
-      event: eventType || "unknown"
+      event: "Contact",
+      received: true,
+      sentToMeta: true
     });
   } catch (error) {
-    console.error("Webhook processing error");
+    console.error("Webhook processing failed", {
+      message: error.message
+    });
 
-    return res.status(400).json({
+    return res.status(502).json({
       ok: false,
-      error: "Invalid webhook request"
+      error: "Message processing failed"
     });
   }
 }
