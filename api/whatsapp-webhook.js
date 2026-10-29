@@ -78,7 +78,6 @@ async function sendContactToMeta(payload, deliveryId) {
     event_name: "Contact",
     event_time: eventTime,
     action_source: "chat",
-    messaging_channel: "whatsapp",
     user_data: userData
   };
 
