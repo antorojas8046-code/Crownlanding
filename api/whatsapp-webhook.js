@@ -98,6 +98,7 @@ async function sendContactToMeta(payload, deliveryId) {
     },
     body: JSON.stringify({
       data: [event]
+      test_event_code "TEST12743"
     })
   });
 
