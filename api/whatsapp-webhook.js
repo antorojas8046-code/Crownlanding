@@ -2,6 +2,7 @@ const crypto = require("crypto");
 
 const PIXEL_ID = "1734115240991081";
 const META_API_VERSION = "v25.0";
+const TEST_EVENT_CODE = "TEST12743";
 
 async function readRawBody(req) {
   const chunks = [];
@@ -49,11 +50,12 @@ async function sendContactToMeta(payload) {
   }
 
   const data = payload.data || {};
-  const textBody = String(data.text?.body || "");
+  const messageText = String(data.text?.body || "");
 
-  // Solo contabilizar el mensaje inicial que lleva la referencia
-  // generada por la landing.
-  const match = textBody.match(/\bRef:\s*([A-Z0-9]{8,32})\b/i);
+  // Solo procesar mensajes que tengan una referencia de la landing.
+  const match = messageText.match(
+    /\bRef:\s*([A-Z0-9]{8,32})\b/i
+  );
 
   if (!match) {
     return {
@@ -65,8 +67,6 @@ async function sendContactToMeta(payload) {
   const reference = match[1].toUpperCase();
   const messageId = String(data.message_id || "").trim();
 
-  // Sin un ID de mensaje no enviamos el evento, para evitar
-  // conversiones que no podamos identificar correctamente.
   if (!messageId) {
     throw new Error("Missing WhatsApp message_id");
   }
@@ -117,7 +117,7 @@ async function sendContactToMeta(payload) {
     },
     body: JSON.stringify({
       data: [event],
-      test_event_code: "TEST12743"
+      test_event_code: TEST_EVENT_CODE
     })
   });
 
@@ -142,7 +142,8 @@ async function sendContactToMeta(payload) {
   console.log("Meta Contact accepted", {
     eventsReceived: result.events_received,
     eventId: messageId,
-    reference: reference
+    reference: reference,
+    testMode: true
   });
 
   return {
@@ -177,6 +178,8 @@ async function handler(req, res) {
     const signature = req.headers["x-zapclaw-signature"];
 
     if (!verifySignature(rawBody, signature, secret)) {
+      console.error("Invalid ZapClaw webhook signature");
+
       return res.status(401).json({
         ok: false,
         error: "Invalid webhook signature"
@@ -203,7 +206,8 @@ async function handler(req, res) {
       event: result.sent ? "Contact" : null,
       received: true,
       sentToMeta: result.sent,
-      reason: result.reason || null
+      reason: result.reason || null,
+      testMode: true
     });
   } catch (error) {
     console.error("Webhook processing failed", {
