@@ -2,7 +2,6 @@ const crypto = require("crypto");
 
 const PIXEL_ID = "1734115240991081";
 const META_API_VERSION = "v25.0";
-const TEST_EVENT_CODE = "TEST12743";
 
 async function readRawBody(req) {
   const chunks = [];
@@ -42,7 +41,7 @@ function sha256(value) {
     .digest("hex");
 }
 
-async function sendContactToMeta(payload, deliveryId) {
+async function sendContactToMeta(payload) {
   const token = process.env.META_CAPI_TOKEN;
 
   if (!token) {
@@ -50,13 +49,30 @@ async function sendContactToMeta(payload, deliveryId) {
   }
 
   const data = payload.data || {};
-  const phone = String(data.from || "").replace(/\D/g, "");
-  const userId = String(data.user_id || "").trim().toLowerCase();
+  const textBody = String(data.text?.body || "");
+
+  // Solo contabilizar el mensaje inicial que lleva la referencia
+  // generada por la landing.
+  const match = textBody.match(/\bRef:\s*([A-Z0-9]{8,32})\b/i);
+
+  if (!match) {
+    return {
+      sent: false,
+      reason: "No landing reference"
+    };
+  }
+
+  const reference = match[1].toUpperCase();
   const messageId = String(data.message_id || "").trim();
 
-  if (!phone && !userId) {
-    throw new Error("No matching user identifier");
+  // Sin un ID de mensaje no enviamos el evento, para evitar
+  // conversiones que no podamos identificar correctamente.
+  if (!messageId) {
+    throw new Error("Missing WhatsApp message_id");
   }
+
+  const phone = String(data.from || "").replace(/\D/g, "");
+  const userId = String(data.user_id || "").trim().toLowerCase();
 
   const userData = {};
 
@@ -66,6 +82,10 @@ async function sendContactToMeta(payload, deliveryId) {
 
   if (userId) {
     userData.external_id = [sha256(userId)];
+  }
+
+  if (!phone && !userId) {
+    throw new Error("Missing user identifier");
   }
 
   const timestamp = Number(data.timestamp);
@@ -78,13 +98,13 @@ async function sendContactToMeta(payload, deliveryId) {
   const event = {
     event_name: "Contact",
     event_time: eventTime,
+    event_id: messageId,
     action_source: "chat",
-    user_data: userData
+    user_data: userData,
+    custom_data: {
+      landing_reference: reference
+    }
   };
-
-  if (messageId || deliveryId) {
-    event.event_id = messageId || deliveryId;
-  }
 
   const url =
     `https://graph.facebook.com/${META_API_VERSION}/${PIXEL_ID}/events` +
@@ -96,7 +116,7 @@ async function sendContactToMeta(payload, deliveryId) {
       "Content-Type": "application/json"
     },
     body: JSON.stringify({
-      data: [event],
+      data: [event]
     })
   });
 
@@ -120,11 +140,14 @@ async function sendContactToMeta(payload, deliveryId) {
 
   console.log("Meta Contact accepted", {
     eventsReceived: result.events_received,
-    eventId: event.event_id || null,
-    testMode: true
+    eventId: messageId,
+    reference: reference
   });
 
-  return result;
+  return {
+    sent: true,
+    eventsReceived: result.events_received
+  };
 }
 
 async function handler(req, res) {
@@ -153,8 +176,6 @@ async function handler(req, res) {
     const signature = req.headers["x-zapclaw-signature"];
 
     if (!verifySignature(rawBody, signature, secret)) {
-      console.error("Invalid ZapClaw webhook signature");
-
       return res.status(401).json({
         ok: false,
         error: "Invalid webhook signature"
@@ -170,21 +191,18 @@ async function handler(req, res) {
       return res.status(200).json({
         ok: true,
         ignored: true,
-        event: eventType || "unknown"
+        reason: "Not an incoming message"
       });
     }
 
-    const deliveryId =
-      req.headers["x-zapclaw-delivery"] || null;
-
-    await sendContactToMeta(payload, deliveryId);
+    const result = await sendContactToMeta(payload);
 
     return res.status(200).json({
       ok: true,
-      event: "Contact",
+      event: result.sent ? "Contact" : null,
       received: true,
-      sentToMeta: true,
-      testMode: true
+      sentToMeta: result.sent,
+      reason: result.reason || null
     });
   } catch (error) {
     console.error("Webhook processing failed", {
