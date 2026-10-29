@@ -1,660 +1,298 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-
 <head>
-
-<meta charset="UTF-8">
-
-<meta
-  name="viewport"
-  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
->
-
-<meta
-  name="theme-color"
-  content="#0a0a0a"
->
-
-<title>Cargando chat...</title>
-
-
-<!-- =========================================================
-     KOMMO
-     CHATWEB 1GIROX
-     ID: 1079229
-     ========================================================= -->
-
-<script>
-
-window.crmPluginConfig = {
-
-  hidden: true,
-
-  color: '#D4AF37',
-
-  onlinechat: {
-
-    mode: 'frame',
-
-    container: '#kommoChatFrame',
-
-    locale: {
-
-      extends: 'es',
-
-      compose_placeholder:
-        'Escribí tu mensaje...'
-
-    }
-
-  }
-
-};
-
-</script>
-
-
-<script>
-
-(function(a,m,o,c,r,m){
-
-  a[m] = {
-
-    id: "1079229",
-
-    hash:
-      "614736799a2b5435c83a39779767d9b7eea5895c812a2176736cf8875a8ceb8b",
-
-    locale: "es",
-
-    setMeta: function(p){
-
-      this.params =
-        (this.params || []).concat([p]);
-
-    }
-
-  };
-
-
-  a[o] = a[o] || function(){
-
-    (a[o].q = a[o].q || []).push(arguments);
-
-  };
-
-
-  var d = a.document;
-
-  var s = d.createElement('script');
-
-  s.async = true;
-
-  s.id = m + '_script';
-
-  s.src =
-    'https://gso.kommo.com/js/button.js';
-
-  d.head &&
-    d.head.appendChild(s);
-
-
-}(window, 0, 'crmPlugin', 0, 0, 'crm_plugin'));
-
-</script>
-
-
-<!-- =========================================================
-     META PIXEL 1GIROX
-     
-     SOLO PAGEVIEW
-     
-     IMPORTANTE:
-     NO CONTACT
-     NO CONVERSATION
-     NO CLICK
-     NO EVENTO AL ABRIR CHAT
-     ========================================================= -->
-
-<script>
-
-(function(){
-
-  'use strict';
-
-
-  !function(f,b,e,v,n,t,s){
-
-    if(f.fbq)return;
-
-    n=f.fbq=function(){
-
-      n.callMethod ?
-        n.callMethod.apply(
-          n,
-          arguments
-        ) :
-        n.queue.push(arguments);
-
-    };
-
-
-    if(!f._fbq)
-      f._fbq=n;
-
-
-    n.push=n;
-
-    n.loaded=true;
-
-    n.version='2.0';
-
-    n.queue=[];
-
-
-    t=b.createElement(e);
-
-    t.async=true;
-
-    t.src=v;
-
-
-    s=b.getElementsByTagName(e)[0];
-
-    s.parentNode.insertBefore(t,s);
-
-  }(
-    window,
-    document,
-    'script',
-    'https://connect.facebook.net/en_US/fbevents.js'
-  );
-
-
-  <!-- PIXEL 1GIROX -->
-
-  fbq(
-    'init',
-    '1433903062132651'
-  );
-
-
-  <!-- PAGEVIEW -->
-
-  fbq(
-    'track',
-    'PageView'
-  );
-
-
-  console.log(
-    '========================================'
-  );
-
-  console.log(
-    '✅ 1GIROX PIXEL INICIALIZADO'
-  );
-
-  console.log(
-    '✅ PAGEVIEW ENVIADO'
-  );
-
-  console.log(
-    '🚫 CONTACT NO SE ENVÍA'
-  );
-
-  console.log(
-    '🚫 CONVERSATION NO SE ENVÍA DESDE EL NAVEGADOR'
-  );
-
-  console.log(
-    '========================================'
-  );
-
-})();
-
-</script>
-
-
-<!-- =========================================================
-     NOSCRIPT PAGEVIEW
-     ========================================================= -->
-
-<noscript>
-
-<img
-  height="1"
-  width="1"
-  style="display:none"
-  src="https://www.facebook.com/tr?id=1433903062132651&ev=PageView&noscript=1"
-  alt=""
->
-
-</noscript>
-
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b0211">
+<title>Ganamos.net | Bono 50%</title>
+<meta name="description" content="Consultá las condiciones del bono de bienvenida por WhatsApp.">
 
 <style>
-
-/* =========================================================
-   RESET
-   ========================================================= */
-
-*{
-
-  margin:0;
-
-  padding:0;
-
-  box-sizing:border-box;
-
-}
-
-
-/* =========================================================
-   BODY
-   ========================================================= */
-
-html,
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif}
 body{
-
-  width:100%;
-
-  height:100%;
-
-  overflow:hidden;
-
-  background:#0a0a0a;
-
-  font-family:
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    Roboto,
-    Helvetica,
-    Arial,
-    sans-serif;
-
-}
-
-
-/* =========================================================
-   CHAT FRAME
-   ========================================================= */
-
-#kommoChatFrame{
-
-  position:fixed;
-
-  inset:0;
-
-  width:100%;
-
-  height:100%;
-
-  background:#0a0a0a;
-
-  visibility:visible;
-
-  opacity:1;
-
-  z-index:9999;
-
-}
-
-
-#kommoChatFrame iframe{
-
-  width:100% !important;
-
-  height:100% !important;
-
-  border:0 !important;
-
-}
-
-
-/* =========================================================
-   LOADING
-   ========================================================= */
-
-#chatLoading{
-
-  position:fixed;
-
-  inset:0;
-
-  display:flex;
-
-  flex-direction:column;
-
-  align-items:center;
-
-  justify-content:center;
-
-  background:#0a0a0a;
-
+  min-height:100svh;
+  background:radial-gradient(ellipse at 50% 45%,#210b35 0,#13051d 42%,#08010d 100%);
   color:#fff;
-
-  z-index:10000;
-
-  transition:
-    opacity .25s ease,
-    visibility .25s ease;
-
+  display:flex;
+  justify-content:center
 }
-
-
-#chatLoading.hidden{
-
-  opacity:0;
-
-  visibility:hidden;
-
-  pointer-events:none;
-
+.page{
+  width:100%;
+  max-width:520px;
+  min-height:100svh;
+  padding:clamp(36px,8vh,76px) 23px 34px;
+  text-align:center;
+  display:flex;
+  align-items:center;
+  flex-direction:column
 }
-
-
-/* =========================================================
-   SPINNER
-   ========================================================= */
-
-.spinner{
-
-  width:38px;
-
-  height:38px;
-
-  border:
-
-    3px solid
-    rgba(212,175,55,0.20);
-
-  border-top-color:#D4AF37;
-
+.eyebrow{
+  margin:0 0 8px;
+  font-size:clamp(15px,4vw,20px);
+  font-weight:900;
+  letter-spacing:.11em;
+  color:#ffe89a
+}
+.logo{
+  font-size:clamp(42px,11vw,65px);
+  font-weight:1000;
+  letter-spacing:-.055em;
+  line-height:1;
+  color:#f8f7fa;
+  text-shadow:0 2px #aaa,0 4px #777,0 7px 13px #000;
+  white-space:nowrap
+}
+.spade{color:#bd8bff;text-shadow:0 0 10px #a855f7}
+.net{
+  margin-top:2px;
+  font-size:clamp(35px,9vw,55px);
+  font-weight:1000;
+  letter-spacing:.26em;
+  color:#f4c648;
+  text-shadow:0 3px 12px #d99b2540
+}
+.tagline{
+  font-size:clamp(7px,1.9vw,10px);
+  letter-spacing:.47em;
+  font-weight:800;
+  color:#e9e1ed;
+  margin-top:13px;
+  white-space:nowrap
+}
+.ticket{
+  width:100%;
+  max-width:440px;
+  margin-top:clamp(50px,8vh,80px);
+  padding:5px;
+  border-radius:24px;
+  background:linear-gradient(135deg,#514a3d,#211a1b,#4c432d);
+  box-shadow:0 16px 30px #0008,0 0 35px #d5a93c1c
+}
+.ticket-inner{
+  position:relative;
+  min-height:220px;
+  border:3px solid #8c671e;
+  border-radius:18px;
+  background:linear-gradient(115deg,#e3bd4c,#fff0a4 20%,#f6d96e 50%,#fff0a6 75%,#d9ad3e);
+  color:#28103f;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:24px 14px;
+  box-shadow:inset 0 0 0 2px #fff5ba,inset 0 0 25px #99661642
+}
+.ticket-inner:before,.ticket-inner:after{
+  content:"";
+  position:absolute;
+  top:50%;
+  width:26px;
+  height:26px;
   border-radius:50%;
-
-  animation:
-    spin .8s linear infinite;
-
-  margin-bottom:14px;
-
+  background:#180923;
+  transform:translateY(-50%)
 }
-
-
-.loadingText{
-
-  font-size:14px;
-
-  color:#aaa;
-
-  letter-spacing:.2px;
-
+.ticket-inner:before{left:-16px}
+.ticket-inner:after{right:-16px}
+.ticket-label{
+  font-size:clamp(12px,3.2vw,15px);
+  font-weight:900;
+  letter-spacing:.17em;
+  margin-bottom:16px
 }
-
-
-/* =========================================================
-   ANIMACIÓN
-   ========================================================= */
-
-@keyframes spin{
-
-  from{
-
-    transform:rotate(0deg);
-
-  }
-
-  to{
-
-    transform:rotate(360deg);
-
-  }
-
+.bonus{
+  font-size:clamp(40px,11vw,58px);
+  font-weight:1000;
+  line-height:1;
+  letter-spacing:-.04em;
+  white-space:nowrap
 }
-
+.code{
+  margin-top:20px;
+  border:2px dashed #72521d;
+  padding:9px 19px;
+  font-size:clamp(15px,4vw,20px);
+  font-weight:900;
+  color:#6b4a16
+}
+.congrats{
+  font-size:clamp(16px,4vw,20px);
+  color:#c9c0d1;
+  line-height:1.5;
+  margin:clamp(50px,8vh,78px) 0 0
+}
+.cta{
+  margin-top:47px;
+  width:min(100%,420px);
+  min-height:92px;
+  padding:18px 20px;
+  border-radius:999px;
+  border:2px solid #31e99a;
+  background:linear-gradient(110deg,#14db7b,#09bb84 48%,#079f80);
+  box-shadow:0 0 0 3px #0a643d40 inset,0 12px 28px #00d17a25,0 0 36px #00e58a20;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:15px;
+  color:white;
+  text-decoration:none;
+  font-size:clamp(17px,4.3vw,23px);
+  font-weight:900;
+  letter-spacing:-.025em;
+  cursor:pointer;
+  transition:filter .15s,transform .15s
+}
+.cta:hover{filter:brightness(1.08);transform:translateY(-2px)}
+.cta:focus-visible{outline:3px solid white;outline-offset:4px}
+.wa{width:37px;height:37px;flex:none}
+.age{
+  margin-top:clamp(55px,8vh,80px);
+  color:#83758d;
+  font-size:clamp(14px,3.7vw,18px)
+}
+.age strong{font-weight:500;color:#a99bb2}
+.note{
+  margin:24px 0 0;
+  max-width:400px;
+  color:#817388;
+  font-size:11px;
+  line-height:1.5
+}
+@media(max-width:380px){
+  .page{padding-left:17px;padding-right:17px}
+  .ticket-inner{min-height:190px}
+  .cta{min-height:78px;margin-top:38px}
+  .ticket{margin-top:42px}
+  .congrats{margin-top:43px}
+  .age{margin-top:48px}
+  .tagline{letter-spacing:.32em}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition:none!important}
+}
 </style>
-
 </head>
 
-
 <body>
+<main class="page">
 
+  <p class="eyebrow">ACCESO EXCLUSIVO</p>
 
-<!-- =========================================================
-     CHATWEB
-     ========================================================= -->
-
-<div id="kommoChatFrame"></div>
-
-
-<!-- =========================================================
-     CARGANDO CHAT
-     ========================================================= -->
-
-<div id="chatLoading">
-
-  <div class="spinner"></div>
-
-  <div class="loadingText">
-
-    Cargando chat...
-
+  <div class="logo" aria-label="Ganamos">
+    G<span class="spade">♠</span>NAMOS
   </div>
 
-</div>
+  <div class="net">.NET</div>
 
+  <div class="tagline">
+    CASINO ONLINE · CRUPIERES EN VIVO
+  </div>
+
+  <section class="ticket" aria-label="Cupón de bono del 50 por ciento">
+    <div class="ticket-inner">
+      <div class="ticket-label">GANAMOS GOLDEN TICKET</div>
+      <div class="bonus">BONO 50%</div>
+      <div class="code">VIP-GOLDEN</div>
+    </div>
+  </section>
+
+  <p class="congrats">
+    ¡Felicidades! Tu beneficio está activado
+  </p>
+
+  <a class="cta" id="claimButton" href="#" rel="nofollow">
+    <svg class="wa" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+      <path d="M26.5 15.5a11 11 0 0 1-16.2 9.6L4 27l1.8-6.2a11 11 0 1 1 20.7-5.3Z"
+        stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/>
+      <path d="M11 9.8c-.5 0-.9.2-1.2.6-.5.5-1.5 1.5-1.5 3.5s1.5 4 1.7 4.3c.2.3 3 4.7 7.4 6.4 3.6 1.4 4.4 1.1 5.2 1 .8-.1 2.4-1 2.8-1.9.3-.9.3-1.8.2-2-.1-.2-.4-.3-.9-.6l-2.8-1.3c-.4-.2-.7-.2-1 .3-.3.5-1 1.3-1.3 1.5-.2.3-.5.3-.9.1-.5-.2-1.9-.7-3.5-2.1-1.3-1.1-2.1-2.5-2.4-3-.2-.5 0-.7.2-.9l.7-.8c.2-.3.3-.5.5-.8.1-.3.1-.6 0-.8l-1.2-2.9c-.3-.7-.6-.6-.9-.6Z"
+        fill="currentColor" transform="translate(3 1) scale(.82)"/>
+    </svg>
+    <span>RECLAMAR MI BONO</span>
+  </a>
+
+  <div class="age">
+    +18 <strong>| JUEGA CON RESPONSABILIDAD</strong>
+  </div>
+
+  <p class="note">
+    Beneficio sujeto a términos, requisitos y disponibilidad.
+    Solo para mayores de 18 años y donde la actividad sea legal.
+    Consultá las condiciones antes de participar.
+  </p>
+
+</main>
 
 <script>
+/* CONFIGURACIÓN YA COMPLETADA */
 
-/* =========================================================
-   ELEMENTOS
-   ========================================================= */
+const WHATSAPP_NUMBER = "5492612694405";
+const META_PIXEL_ID = "1734115240991081";
 
-const frame =
-  document.getElementById(
-    'kommoChatFrame'
-  );
-
-
-const loading =
-  document.getElementById(
-    'chatLoading'
-  );
-
-
-/* =========================================================
-   OCULTAR LOADING
-   ========================================================= */
-
-function hideLoading(){
-
-  loading.classList.add(
-    'hidden'
-  );
-
-}
-
-
-/* =========================================================
-   ABRIR CHATWEB
-   ========================================================= */
-
-function openChatWeb(){
-
-  try{
-
-    crmPlugin(
-      'runChatShow'
-    );
-
-
-    console.log(
-      '========================================'
-    );
-
-    console.log(
-      '✅ 1GIROX CHATWEB ABIERTO'
-    );
-
-    console.log(
-      '🚫 NO CONTACT'
-    );
-
-    console.log(
-      '🚫 NO EVENTO DESDE NAVEGADOR'
-    );
-
-    console.log(
-      '========================================'
-    );
-
-
-    /*
-     * Esperamos un momento para permitir
-     * que Kommo inserte el iframe.
-     */
-
-    setTimeout(
-      watchIframe,
-      100
-    );
-
-
-  }catch(error){
-
-    console.error(
-      '❌ ERROR ABRIENDO CHATWEB:',
-      error
-    );
-
+/* Referencia para identificar el contacto originado en la landing. */
+function leadRef() {
+  try {
+    const bytes = new Uint8Array(8);
+    crypto.getRandomValues(bytes);
+    return Array.from(
+      bytes,
+      byte => byte.toString(16).padStart(2, "0")
+    ).join("").toUpperCase();
+  } catch (error) {
+    return Math.random().toString(36).slice(2, 10).toUpperCase();
   }
-
 }
 
+/* Inicialización de Meta Pixel y PageView. */
+!function(f,b,e,v,n,t,s) {
+  if (f.fbq) return;
+  n = f.fbq = function() {
+    n.callMethod
+      ? n.callMethod.apply(n, arguments)
+      : n.queue.push(arguments);
+  };
+  if (!f._fbq) f._fbq = n;
+  n.push = n;
+  n.loaded = true;
+  n.version = "2.0";
+  n.queue = [];
+  t = b.createElement(e);
+  t.async = true;
+  t.src = v;
+  s = b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t, s);
+}(window, document, "script",
+  "https://connect.facebook.net/en_US/fbevents.js");
 
-/* =========================================================
-   DETECTAR IFRAME
-   ========================================================= */
+fbq("init", META_PIXEL_ID);
+fbq("track", "PageView");
 
-function watchIframe(){
+/* Enlace a WhatsApp Business con mensaje prellenado. */
+const button = document.getElementById("claimButton");
+const message =
+  "Hola, quiero consultar las condiciones del bono del 50%. Ref: "
+  + leadRef();
 
-  const iframe =
-    frame.querySelector(
-      'iframe'
-    );
+button.href =
+  "https://wa.me/" + WHATSAPP_NUMBER
+  + "?text=" + encodeURIComponent(message);
 
+button.target = "_blank";
+button.rel = "noopener noreferrer nofollow";
 
-  if(iframe){
-
-    console.log(
-      '✅ IFRAME CHATWEB DETECTADO'
-    );
-
-
-    iframe.addEventListener(
-      'load',
-      function(){
-
-        console.log(
-          '✅ CHATWEB TERMINÓ DE CARGAR'
-        );
-
-        hideLoading();
-
-      }
-    );
-
-
-    /*
-     * Fallback por si el iframe
-     * ya estaba cargado.
-     */
-
-    setTimeout(
-      hideLoading,
-      1200
-    );
-
-
-    return;
-
+/* Evento personalizado al tocar RECLAMAR MI BONO. */
+button.addEventListener("click", function() {
+  if (typeof window.fbq === "function") {
+    fbq("trackCustom", "BonusClaimClick");
   }
+});
 
-
-  /*
-   * Todavía no existe el iframe.
-   * Seguimos esperando.
-   */
-
-  setTimeout(
-    watchIframe,
-    100
-  );
-
-}
-
-
-/* =========================================================
-   ESPERAR A KOMMO
-   ========================================================= */
-
-function bindKommo(){
-
-  if(
-    typeof crmPlugin !==
-    'function'
-  ){
-
-    setTimeout(
-      bindKommo,
-      100
-    );
-
-    return;
-
-  }
-
-
-  console.log(
-    '⏳ ESPERANDO CHATWEB 1GIROX...'
-  );
-
-
-  crmPlugin(
-    'onChatReady',
-    function(){
-
-      console.log(
-        '✅ KOMMO CHATWEB LISTO'
-      );
-
-
-      /*
-       * ABRIR AUTOMÁTICAMENTE
-       *
-       * No hay botón.
-       * No hay landing.
-       * No hay Contact.
-       */
-
-      openChatWeb();
-
-    }
-  );
-
-}
-
-
-/* =========================================================
-   INICIAR
-   ========================================================= */
-
-bindKommo();
-
+/*
+  IMPORTANTE:
+  WhatsAppMessageReceived no se dispara desde este HTML.
+  Debe generarlo el endpoint del servidor cuando ZapClaw
+  notifique un mensaje entrante real y válido.
+*/
 </script>
-
-
 </body>
-
 </html>
