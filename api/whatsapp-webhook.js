@@ -116,8 +116,8 @@ async function sendContactToMeta(payload) {
       "Content-Type": "application/json"
     },
     body: JSON.stringify({
-      data: [event]
-      const test_event_code: "TEST12743"
+      data: [event],
+      test_event_code: "TEST12743"
     })
   });
 
