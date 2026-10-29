@@ -45,7 +45,7 @@ async function sendContactToMeta(payload, deliveryId) {
   const token = process.env.META_CAPI_TOKEN;
 
   if (!token) {
-    throw new Error("Missing Meta CAPI token");
+    throw new Error("Missing META_CAPI_TOKEN");
   }
 
   const data = payload.data || {};
@@ -53,7 +53,6 @@ async function sendContactToMeta(payload, deliveryId) {
   const userId = String(data.user_id || "").trim().toLowerCase();
   const messageId = String(data.message_id || "").trim();
 
-  // Necesitamos un identificador válido para asociar el evento.
   if (!phone && !userId) {
     throw new Error("No matching user identifier");
   }
@@ -69,6 +68,7 @@ async function sendContactToMeta(payload, deliveryId) {
   }
 
   const timestamp = Number(data.timestamp);
+
   const eventTime =
     Number.isFinite(timestamp) && timestamp > 0
       ? Math.floor(timestamp)
@@ -77,33 +77,44 @@ async function sendContactToMeta(payload, deliveryId) {
   const event = {
     event_name: "Contact",
     event_time: eventTime,
-    event_id: messageId || deliveryId,
     action_source: "chat",
     messaging_channel: "whatsapp",
     user_data: userData
   };
 
-  const response = await fetch(
-    `https://graph.facebook.com/${META_API_VERSION}/${PIXEL_ID}/events`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        access_token: token,
-        data: [event]
-      })
-    }
-  );
+  // Reutilizar el mismo ID en reintentos ayuda a identificar
+  // el mismo mensaje. No reemplaza una deduplicación persistente.
+  if (messageId || deliveryId) {
+    event.event_id = messageId || deliveryId;
+  }
+
+  const url =
+    `https://graph.facebook.com/${META_API_VERSION}/${PIXEL_ID}/events` +
+    `?access_token=${encodeURIComponent(token)}`;
+
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      data: [event]
+    })
+  });
 
   const result = await response.json();
 
   if (!response.ok || result.error) {
+    const metaError = result.error || {};
+
     console.error("Meta CAPI rejected Contact", {
       status: response.status,
-      code: result.error?.code || null,
-      type: result.error?.type || null
+      code: metaError.code || null,
+      subcode: metaError.error_subcode || null,
+      type: metaError.type || null,
+      message: metaError.message || null,
+      details: metaError.error_data?.details || null,
+      trace: metaError.fbtrace_id || null
     });
 
     throw new Error("Meta CAPI request failed");
@@ -111,7 +122,7 @@ async function sendContactToMeta(payload, deliveryId) {
 
   console.log("Meta Contact accepted", {
     eventsReceived: result.events_received,
-    eventId: event.event_id
+    eventId: event.event_id || null
   });
 
   return result;
@@ -143,6 +154,8 @@ async function handler(req, res) {
     const signature = req.headers["x-zapclaw-signature"];
 
     if (!verifySignature(rawBody, signature, secret)) {
+      console.error("Invalid ZapClaw webhook signature");
+
       return res.status(401).json({
         ok: false,
         error: "Invalid webhook signature"
@@ -150,6 +163,7 @@ async function handler(req, res) {
     }
 
     const payload = JSON.parse(rawBody.toString("utf8"));
+
     const eventType =
       req.headers["x-zapclaw-event"] || payload.event;
 
